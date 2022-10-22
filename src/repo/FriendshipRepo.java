@@ -63,12 +63,14 @@ public class FriendshipRepo {
         if(!friendships.add(friendship)){
             throw new RepoException("prietenia exista deja");
         }
+        saveFriendshipsToFile();
     }
 
     public void removeFriendship(Friendship friendship) throws RepoException{
         if(!friendships.remove(friendship)){
             throw new RepoException("prietenia nu există");
         }
+        saveFriendshipsToFile();
     }
 
 }

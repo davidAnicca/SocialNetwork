@@ -37,6 +37,11 @@ public class Friendship {
     }
 
     @Override
+    public String toString() {
+        return user1 + " este prieten cu " + user2;
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(user1, user2);
     }

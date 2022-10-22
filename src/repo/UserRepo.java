@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -45,7 +46,7 @@ public class UserRepo {
 
     public User find(User user) {
         for (User user1 : users) {
-            if (user1 == user)
+            if (Objects.equals(user1, user))
                 return user1;
         }
         return null;

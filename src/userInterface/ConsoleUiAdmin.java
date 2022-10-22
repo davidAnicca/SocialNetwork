@@ -1,5 +1,6 @@
 package userInterface;
 
+import domain.Friendship;
 import domain.User;
 import exceptions.RepoException;
 import service.UserService;
@@ -44,10 +45,49 @@ public class ConsoleUiAdmin {
             case "3":
                 showUsersUi();
                 break;
+            case "4":
+                showFriendshipUi();
+                break;
+            case "5":
+                addFriendshipUi();
+                break;
+            case "6":
+                removeFriendshipUi();
+                break;
             default:
                 System.out.println("optiune invalida");
         }
         return true;
+    }
+
+    private void removeFriendshipUi() {
+        System.out.print("user1>>");
+        String user1 = readFromConsole();
+        System.out.print("user2>>");
+        String user2 = readFromConsole();
+        try {
+            service.removeFriendship(user1, user2);
+        }catch (RepoException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void addFriendshipUi() {
+        System.out.print("user1>>");
+        String user1 = readFromConsole();
+        System.out.print("user2>>");
+        String user2 = readFromConsole();
+        try {
+            service.addFriendship(user1.strip(), user2.strip());
+        }catch (RepoException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void showFriendshipUi() {
+        for(Friendship friendship:service.getFriendships()){
+            System.out.println(friendship);
+        }
     }
 
     private void showUsersUi() {
@@ -56,7 +96,7 @@ public class ConsoleUiAdmin {
     }
 
     private void removeUserUi() {
-        System.out.println("user name>>");
+        System.out.print("user name>>");
         String userName = readFromConsole();
         try {
             service.removeUser(userName);
@@ -86,5 +126,8 @@ public class ConsoleUiAdmin {
         System.out.println("1.Adauga utilizator");
         System.out.println("2.Sterge utilizator");
         System.out.println("3.Vezi toti utilizatorii");
+        System.out.println("4.Vezi prietenie");
+        System.out.println("5. Adauga prietenie");
+        System.out.println("6. Sterge prietenie");
     }
 }

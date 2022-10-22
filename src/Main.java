@@ -1,5 +1,6 @@
 import domain.User;
 import exceptions.RepoException;
+import repo.FriendshipRepo;
 import repo.UserRepo;
 import service.UserService;
 import userInterface.ConsoleUiAdmin;
@@ -8,7 +9,12 @@ public class Main {
     public static void main(String[] args) throws RepoException {
         //testRepo();
         ///testSrv();
-        ConsoleUiAdmin consoleUiAdmin = new ConsoleUiAdmin(new UserService(new UserRepo("users.csv")));
+        ConsoleUiAdmin consoleUiAdmin = new ConsoleUiAdmin(
+                new UserService(
+                        new UserRepo("users.csv"),
+                        new FriendshipRepo("friendships.csv")
+                )
+        );
         consoleUiAdmin.run();
     }
 
@@ -40,7 +46,7 @@ public class Main {
 
     private static void testSrv() {
         UserRepo repo = new UserRepo("users.csv");
-        UserService service = new UserService(repo);
+        UserService service = new UserService(repo, null);
         try {
             service.addUser("bla", "bla");
         } catch (RepoException ignored) {
