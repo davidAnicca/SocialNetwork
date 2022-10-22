@@ -15,6 +15,10 @@ public class UserRepo {
     private final Set<User> users = new HashSet<>();
     private String filePath;
 
+    public Set<User> getUsers() {
+        return users;
+    }
+
     public UserRepo(String filePath) {
         this.filePath = filePath;
         getUsersFromFile();
@@ -31,7 +35,7 @@ public class UserRepo {
                 String[] split = data.split(",");
                 User newUser = new User(split[0], split[1]);
                 users.add(newUser);
-                System.out.println(newUser);
+                ///System.out.println(newUser);
             }
             myReader.close();
         } catch (FileNotFoundException e) {

@@ -2,11 +2,14 @@ import domain.User;
 import exceptions.RepoException;
 import repo.UserRepo;
 import service.UserService;
+import userInterface.ConsoleUiAdmin;
 
 public class Main {
     public static void main(String[] args) throws RepoException {
-        testRepo();
-        testSrv();
+        //testRepo();
+        ///testSrv();
+        ConsoleUiAdmin consoleUiAdmin = new ConsoleUiAdmin(new UserService(new UserRepo("users.csv")));
+        consoleUiAdmin.run();
     }
 
     private static void testRepo() {
