@@ -1,4 +1,4 @@
-package Domain;
+package domain;
 
 import java.util.Objects;
 
@@ -8,6 +8,11 @@ public class User {
 
     public String getUserName() {
         return userName;
+    }
+
+    public User(String userName) {
+        this.userName = userName;
+        password = null;
     }
 
     public void setUserName(String userName) {

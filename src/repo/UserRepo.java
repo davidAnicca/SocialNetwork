@@ -1,7 +1,7 @@
-package Repo;
+package repo;
 
-import Domain.User;
-import Exceptions.RepoException;
+import domain.User;
+import exceptions.RepoException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +21,7 @@ public class UserRepo {
     }
 
 
-    private void getUsersFromFile(){
+    private void getUsersFromFile() {
         users.clear();
         try {
             File file = new File(filePath);
@@ -40,22 +40,22 @@ public class UserRepo {
         }
     }
 
-    public User find(User user){
-        for(User user1: users){
-            if(user1 == user)
+    public User find(User user) {
+        for (User user1 : users) {
+            if (user1 == user)
                 return user1;
         }
         return null;
     }
 
-    private void saveUsersInFile(){
+    private void saveUsersInFile() {
         try {
             FileWriter myWriter = new FileWriter(filePath);
-            for(User user: users){
+            for (User user : users) {
                 myWriter.write(user.getUserName()
-                        +","
-                        +user.getPassword()
-                        +",\n");
+                        + ","
+                        + user.getPassword()
+                        + ",\n");
             }
             myWriter.close();
         } catch (IOException e) {
@@ -65,14 +65,14 @@ public class UserRepo {
     }
 
     public void addUser(User user) throws RepoException {
-        if(!users.add(user)){
+        if (!users.add(user)) {
             throw new RepoException("Userul există deja\n");
         }
         saveUsersInFile();
     }
 
     public void removeUser(User user) throws RepoException {
-        if(!users.remove(user)){
+        if (!users.remove(user)) {
             throw new RepoException("Userul nu există\n");
         }
         saveUsersInFile();
