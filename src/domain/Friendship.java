@@ -3,6 +3,9 @@ package domain;
 import java.util.Objects;
 
 public class Friendship {
+    /**
+     * relație de prietenie dintre doi useri
+     */
     String user1;
     String user2;
 

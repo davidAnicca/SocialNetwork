@@ -13,18 +13,32 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class UserRepo {
+    /**
+     * repo pentru useri
+     */
     private final Set<User> users = new HashSet<>();
     private String filePath;
 
+    /**
+     * Obține toți userii din aplicație
+     * @return o mulțime cu userii care se găsesc în aplicație
+     */
     public Set<User> getUsers() {
         return users;
     }
 
+    /**
+     * constructor
+     * @param filePath fișierul din care se preiau toți userii salvați
+     */
     public UserRepo(String filePath) {
         this.filePath = filePath;
         getUsersFromFile();
     }
 
+    /**
+     * preia userii din fișier
+     */
     private void getUsersFromFile() {
         users.clear();
         try {
@@ -44,6 +58,11 @@ public class UserRepo {
         }
     }
 
+    /**
+     * Caută un user în repo
+     * @param user userul care trebuie căutat
+     * @return true dacă userul a fost găsit
+     */
     public User find(User user) {
         for (User user1 : users) {
             if (Objects.equals(user1, user))
@@ -52,6 +71,9 @@ public class UserRepo {
         return null;
     }
 
+    /**
+     * salvează toți userii în fișier
+     */
     private void saveUsersInFile() {
         try {
             FileWriter myWriter = new FileWriter(filePath);
@@ -68,6 +90,11 @@ public class UserRepo {
         }
     }
 
+    /**
+     * adaugă un utilizator în aplicație
+     * @param user utilizatorul care ar trebui adăugat
+     * @throws RepoException dacă utilizatorul există deja
+     */
     public void addUser(User user) throws RepoException {
         if (!users.add(user)) {
             throw new RepoException("Userul există deja\n");
@@ -75,6 +102,11 @@ public class UserRepo {
         saveUsersInFile();
     }
 
+    /**
+     * șterge un utilizator din aplicație
+     * @param user utilizatorul care trebuie șters
+     * @throws RepoException dacă utilizatorul nu există
+     */
     public void removeUser(User user) throws RepoException {
         if (!users.remove(user)) {
             throw new RepoException("Userul nu există\n");

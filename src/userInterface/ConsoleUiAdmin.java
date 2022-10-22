@@ -16,6 +16,9 @@ public class ConsoleUiAdmin {
         this.service = service;
     }
 
+    /**
+     * ciclul principal al consolei
+     */
     public void run(){
         while (true){
             showMenu();
@@ -23,11 +26,19 @@ public class ConsoleUiAdmin {
         }
     }
 
+    /**
+     * citește din consolă un string
+     * @return stringul citit
+     */
     private String readFromConsole(){
         Scanner in = new Scanner(System.in);
         return in.nextLine();
     }
 
+    /**
+     * se alege comanda dorita din meniu
+     * @return true dacă se dorește continuarea ciclului de consolă
+     */
     private boolean choose() {
         System.out.print(">>");
         String opt = readFromConsole();
@@ -60,6 +71,9 @@ public class ConsoleUiAdmin {
         return true;
     }
 
+    /**
+     * ștergerea unei relații de prietenie
+     */
     private void removeFriendshipUi() {
         System.out.print("user1>>");
         String user1 = readFromConsole();
@@ -72,6 +86,9 @@ public class ConsoleUiAdmin {
         }
     }
 
+    /**
+     * adăugarea unei relații de prietenie
+     */
     private void addFriendshipUi() {
         System.out.print("user1>>");
         String user1 = readFromConsole();
@@ -84,17 +101,26 @@ public class ConsoleUiAdmin {
         }
     }
 
+    /**
+     * afișează toate relațiile de prietenie
+     */
     private void showFriendshipUi() {
         for(Friendship friendship:service.getFriendships()){
             System.out.println(friendship);
         }
     }
 
+    /**
+     * afișează toți utilizatorii din aplicație
+     */
     private void showUsersUi() {
         for (User user: service.getUsers())
             System.out.println(user);
     }
 
+    /**
+     * șterge un utilizator din aplicație
+     */
     private void removeUserUi() {
         System.out.print("user name>>");
         String userName = readFromConsole();
@@ -105,6 +131,9 @@ public class ConsoleUiAdmin {
         }
     }
 
+    /**
+     * adaugă un utilizator
+     */
     private void addUserUi() {
         System.out.print("user name>>");
         String userName = readFromConsole();
@@ -121,6 +150,9 @@ public class ConsoleUiAdmin {
         }
     }
 
+    /**
+     * afișează meniul aplicației
+     */
     private void showMenu() {
         System.out.println("0.Exit");
         System.out.println("1.Adauga utilizator");

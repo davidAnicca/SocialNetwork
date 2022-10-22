@@ -13,18 +13,33 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class FriendshipRepo {
+    /**
+     * repo pentru relațiile de prietenie
+     */
     private final Set<Friendship> friendships = new HashSet<>();
+
     private String filePath;
 
+    /**
+     * constructor
+     * @param filePath fișierul din care se preiau relațiile de prietenie
+     */
     public FriendshipRepo(String filePath) {
         this.filePath = filePath;
         readFriendshipsFromFile();
     }
 
+    /**
+     * obține mulțimea tuturor relațiilor de prietenie
+     * @return o mulțime care conține toate relațiile de prietenie din aplicație
+     */
     public Set<Friendship> getFriendships() {
         return friendships;
     }
 
+    /**
+     * importă relațiile de prietenie din fișier
+     */
     private void readFriendshipsFromFile(){
         friendships.clear();
         try {
@@ -43,6 +58,9 @@ public class FriendshipRepo {
         }
     }
 
+    /**
+     * salvează toate relațiile de prietenie în fișier
+     */
     private void saveFriendshipsToFile(){
         try {
             FileWriter myWriter = new FileWriter(filePath);
@@ -59,6 +77,11 @@ public class FriendshipRepo {
         }
     }
 
+    /**
+     * adaugă o relație de prietenie
+     * @param friendship relația de prietenie care trebuie adăugată
+     * @throws RepoException dacă relația există deja
+     */
     public void addFriendship(Friendship friendship) throws RepoException {
         if(!friendships.add(friendship)){
             throw new RepoException("prietenia exista deja");
@@ -66,6 +89,11 @@ public class FriendshipRepo {
         saveFriendshipsToFile();
     }
 
+    /**
+     * șterge o relație de prietenie
+     * @param friendship relația care ar trebui ștearsă
+     * @throws RepoException dacă relația nu există
+     */
     public void removeFriendship(Friendship friendship) throws RepoException{
         if(!friendships.remove(friendship)){
             throw new RepoException("prietenia nu există");

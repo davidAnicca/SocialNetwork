@@ -3,6 +3,9 @@ package domain;
 import java.util.Objects;
 
 public class User {
+    /**
+     * un user din aplicație
+     */
     private String userName;
     private String password;
 
