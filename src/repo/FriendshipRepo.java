@@ -1,5 +1,6 @@
 package repo;
 
+import domain.Friendship;
 import domain.User;
 import exceptions.RepoException;
 
@@ -11,30 +12,29 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
-public class UserRepo {
-    private final Set<User> users = new HashSet<>();
+public class FriendshipRepo {
+    private final Set<Friendship> friendships = new HashSet<>();
     private String filePath;
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public UserRepo(String filePath) {
+    public FriendshipRepo(String filePath) {
         this.filePath = filePath;
-        getUsersFromFile();
+        readFriendshipsFromFile();
     }
 
-    private void getUsersFromFile() {
-        users.clear();
+    public Set<Friendship> getFriendships() {
+        return friendships;
+    }
+
+    private void readFriendshipsFromFile(){
+        friendships.clear();
         try {
             File file = new File(filePath);
             Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] split = data.split(",");
-                User newUser = new User(split[0], split[1]);
-                users.add(newUser);
-                ///System.out.println(newUser);
+                Friendship newFriendship = new Friendship(split[0], split[1]);
+                friendships.add(newFriendship);
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -43,21 +43,13 @@ public class UserRepo {
         }
     }
 
-    public User find(User user) {
-        for (User user1 : users) {
-            if (user1 == user)
-                return user1;
-        }
-        return null;
-    }
-
-    private void saveUsersInFile() {
+    private void saveFriendshipsToFile(){
         try {
             FileWriter myWriter = new FileWriter(filePath);
-            for (User user : users) {
-                myWriter.write(user.getUserName()
+            for (Friendship friendship : friendships) {
+                myWriter.write(friendship.getUser1()
                         + ","
-                        + user.getPassword()
+                        + friendship.getUser2()
                         + ",\n");
             }
             myWriter.close();
@@ -67,18 +59,16 @@ public class UserRepo {
         }
     }
 
-    public void addUser(User user) throws RepoException {
-        if (!users.add(user)) {
-            throw new RepoException("Userul există deja\n");
+    public void addFriendship(Friendship friendship) throws RepoException {
+        if(!friendships.add(friendship)){
+            throw new RepoException("prietenia exista deja");
         }
-        saveUsersInFile();
     }
 
-    public void removeUser(User user) throws RepoException {
-        if (!users.remove(user)) {
-            throw new RepoException("Userul nu există\n");
+    public void removeFriendship(Friendship friendship) throws RepoException{
+        if(!friendships.remove(friendship)){
+            throw new RepoException("prietenia nu există");
         }
-        saveUsersInFile();
     }
 
 }
