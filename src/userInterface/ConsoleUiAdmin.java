@@ -3,6 +3,7 @@ package userInterface;
 import domain.User;
 import exceptions.RepoException;
 import service.UserService;
+import service.Validator;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -67,6 +68,10 @@ public class ConsoleUiAdmin {
     private void addUserUi() {
         System.out.print("user name>>");
         String userName = readFromConsole();
+        if(!Validator.userNameValidator(userName)){
+            System.out.println("numele trebuie sa contina doar litere si cifre");
+            return;
+        }
         System.out.print("parola>>");
         String password = readFromConsole();
         try {
