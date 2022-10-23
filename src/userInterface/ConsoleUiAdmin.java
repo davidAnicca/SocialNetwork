@@ -8,6 +8,7 @@ import service.Validator;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.Set;
 
 public class ConsoleUiAdmin {
     private UserService service;
@@ -20,6 +21,7 @@ public class ConsoleUiAdmin {
      * ciclul principal al consolei
      */
     public void run(){
+
         while (true){
             showMenu();
             if(!choose())break;
@@ -65,10 +67,44 @@ public class ConsoleUiAdmin {
             case "6":
                 removeFriendshipUi();
                 break;
+            case "7":
+                showNetworks();
+                break;
+            case "8":
+                showLongestNetwork();
+                break;
             default:
                 System.out.println("optiune invalida");
         }
         return true;
+    }
+
+    /**
+     * afisează cea mai lungă rețea din aplicație
+     */
+    private void showLongestNetwork() {
+        showNetwork(service.getLongestNetwork());
+    }
+
+    /**
+     * afișează toate rețelele din aplicație
+     */
+    private void showNetworks(){
+        for(Set<User> network : service.getNetworks()){
+            showNetwork(network);
+        }
+    }
+
+    /**
+     * pretty print o rețea dată
+     * @param network rețeaua dată
+     */
+    private static void showNetwork(Set<User> network) {
+        System.out.println("\nrețea:");
+        for(User user: network){
+            System.out.print(user.getUserName() + " - ");
+        }
+        System.out.print("|\n\n");
     }
 
     /**
@@ -161,5 +197,7 @@ public class ConsoleUiAdmin {
         System.out.println("4.Vezi prietenie");
         System.out.println("5. Adauga prietenie");
         System.out.println("6. Sterge prietenie");
+        System.out.println("7. Afișează rețele");
+        System.out.println("8. Afisează cea mai lungă rețea");
     }
 }

@@ -6,10 +6,7 @@ import exceptions.RepoException;
 import repo.FriendshipRepo;
 import repo.UserRepo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class UserService {
     /**
@@ -17,6 +14,8 @@ public class UserService {
      */
     UserRepo repo;
     FriendshipRepo friendshipRepo;
+
+    NetworksService networksService;
 
     /**
      * constructor
@@ -26,6 +25,7 @@ public class UserService {
     public UserService(UserRepo repo, FriendshipRepo friendshipRepo) {
         this.friendshipRepo = friendshipRepo;
         this.repo = repo;
+        networksService = new NetworksService(friendshipRepo, repo);
     }
 
     /**
@@ -133,19 +133,26 @@ public class UserService {
      * @return lista cu prietenii utilizatorului user
      * @throws RepoException daca user nu referă către un utilizator valid
      */
-    public List<String> getFriends(String user) throws RepoException {
+    public Set<String> getFriends(String user) throws RepoException {
         if(!isUser(user)){
             throw new RepoException(user + " nu este utilizator");
         }
-        List<String> friends = new ArrayList<>();
-        for(Friendship friendship: friendshipRepo.getFriendships()){
-            if(Objects.equals(friendship.getUser1(), user)){
-                friends.add(friendship.getUser2());
-            }
-            if(Objects.equals(friendship.getUser2(), user)){
-                friends.add(friendship.getUser1());
-            }
-        }
-        return friends;
+        return networksService.getFriends(user);
+    }
+
+    /**
+     * Lista tuturor rețelelor din aplicație
+     * @return o listă de rețele; o rețea este o mulțime de utilizatori
+     */
+    public List<Set<User>> getNetworks(){
+        return networksService.networks();
+    }
+
+    /**
+     * obține cea mai lungă comunitate
+     * @return o mulțime de useri (un network)
+     */
+    public Set<User> getLongestNetwork(){
+        return networksService.longestNetwork();
     }
 }
