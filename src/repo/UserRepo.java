@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Scanner;
@@ -47,7 +50,9 @@ public class UserRepo {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] split = data.split(",");
-                User newUser = new User(split[0], split[1]);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(split[3], formatter);
+                User newUser = new User(split[0], split[1], split[2], date.atStartOfDay());
                 users.add(newUser);
                 ///System.out.println(newUser);
             }
@@ -80,7 +85,12 @@ public class UserRepo {
             for (User user : users) {
                 myWriter.write(user.getUserName()
                         + ","
+                        +user.getEmail()
+                        +","
                         + user.getPassword()
+                        +","
+                        + user.getBirthDate()
+                        .format( DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                         + ",\n");
             }
             myWriter.close();

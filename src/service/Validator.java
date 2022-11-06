@@ -1,5 +1,10 @@
 package service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class Validator {
     /**
      * validează numele unui utilizator
@@ -7,6 +12,34 @@ public class Validator {
      * @return true dacă numele de utilizator contine doar litere și cifre
      */
     public static boolean userNameValidator(String userName){
-        return userName.matches("[a-zA-Z0-9]");
+        return userName.matches("[a-zA-Z0-9]+");
+    }
+
+    /**
+     * valideaza stringul de data
+     * @param date string de data care are formatul yyyy-mm-dd
+     * @return false daca nu poate fi o data validă din trecut sau astazi
+     */
+    public static boolean dateValidator(String date){
+        if (!date.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}"))
+            return false;
+        try {
+            LocalDate dateTime = LocalDate.parse(date,
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (dateTime.isAfter(LocalDate.now().plusDays(1)))
+                return false;
+            return true;
+        }catch (DateTimeParseException e){
+            return false;
+        }
+    }
+
+    /**
+     * valideaza un email
+     * @param email stringul pentru validare
+     * @return false dacă stringul nu reprezinta un email valid
+     */
+    public static boolean emailValidator(String email){
+        return email.matches("[a-zA-Z0-9_\\-]+@[a-zA-Z0-9].+[a-zA-Z0-9]");
     }
 }

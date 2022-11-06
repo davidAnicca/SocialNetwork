@@ -3,6 +3,7 @@ package userInterface;
 import domain.Friendship;
 import domain.User;
 import exceptions.RepoException;
+import exceptions.ServiceException;
 import service.UserService;
 import service.Validator;
 
@@ -113,8 +114,16 @@ public class ConsoleUiAdmin {
     private void removeFriendshipUi() {
         System.out.print("user1>>");
         String user1 = readFromConsole();
+        if(!Validator.userNameValidator(user1.strip())){
+            System.out.println("numele trebuie sa contina doar litere si cifre");
+            return;
+        }
         System.out.print("user2>>");
         String user2 = readFromConsole();
+        if(!Validator.userNameValidator(user2.strip())){
+            System.out.println("numele trebuie sa contina doar litere si cifre");
+            return;
+        }
         try {
             service.removeFriendship(user1, user2);
         }catch (RepoException e){
@@ -127,9 +136,19 @@ public class ConsoleUiAdmin {
      */
     private void addFriendshipUi() {
         System.out.print("user1>>");
+
         String user1 = readFromConsole();
+        if(!Validator.userNameValidator(user1.strip())){
+            System.out.println("numele trebuie sa contina doar litere si cifre");
+            return;
+        }
         System.out.print("user2>>");
         String user2 = readFromConsole();
+
+        if(!Validator.userNameValidator(user2.strip())){
+            System.out.println("numele trebuie sa contina doar litere si cifre");
+            return;
+        }
         try {
             service.addFriendship(user1.strip(), user2.strip());
         }catch (RepoException e){
@@ -160,6 +179,10 @@ public class ConsoleUiAdmin {
     private void removeUserUi() {
         System.out.print("user name>>");
         String userName = readFromConsole();
+        if(!Validator.userNameValidator(userName.strip())){
+            System.out.println("numele trebuie sa contina doar litere si cifre");
+            return;
+        }
         try {
             service.removeUser(userName);
         }catch (RepoException e){
@@ -173,15 +196,23 @@ public class ConsoleUiAdmin {
     private void addUserUi() {
         System.out.print("user name>>");
         String userName = readFromConsole();
-        if(!Validator.userNameValidator(userName)){
+        if(!Validator.userNameValidator(userName.strip())){
             System.out.println("numele trebuie sa contina doar litere si cifre");
             return;
         }
         System.out.print("parola>>");
         String password = readFromConsole();
+        System.out.print("email>>");
+        String email = readFromConsole();
+        if(!Validator.emailValidator(email)){
+            System.out.println("email invalid");
+            return;
+        }
+        System.out.print("data nasterii yyyy-MM-dd>>");
+        String date = readFromConsole();
         try {
-            service.addUser(userName.strip(), password.strip());
-        }catch (RepoException e){
+            service.addUser(userName.strip(), email.strip(), password.strip(), date.strip());
+        }catch (RepoException | ServiceException e){
             System.out.println(e.getMessage());
         }
     }

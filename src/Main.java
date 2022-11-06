@@ -1,5 +1,6 @@
 import domain.User;
 import exceptions.RepoException;
+import exceptions.ServiceException;
 import repo.FriendshipRepo;
 import repo.UserRepo;
 import service.UserService;
@@ -21,23 +22,23 @@ public class Main {
     private static void testRepo() {
         UserRepo repo = new UserRepo("users.csv");
         try {
-            repo.addUser(new User("bla", "bla"));
+            repo.addUser(new User("bla", "bla@bla.com", "bla", null));
         } catch (RepoException ignored) {
             System.out.println("repo add error");
         }
         try {
-            repo.addUser(new User("bla", "bla"));
+            repo.addUser(new User("bla", "bla@bla.com", "bla" , null));
             System.out.println("repo add error");
         } catch (RepoException ignored) {
 
         }
         try {
-            repo.removeUser(new User("bla", "bla"));
+            repo.removeUser(new User("bla", "bla@bla.com", "bla", null));
         } catch (RepoException ignored) {
             System.out.println("repo remove error");
         }
         try {
-            repo.removeUser(new User("bla", "bla"));
+            repo.removeUser(new User("bla", "bla@bla.com", "bla", null));
             System.out.println("repo remove error");
         } catch (RepoException ignored) {
 
@@ -48,14 +49,16 @@ public class Main {
         UserRepo repo = new UserRepo("users.csv");
         UserService service = new UserService(repo, null);
         try {
-            service.addUser("bla", "bla");
+            service.addUser("bla", "bla@bla.com", "bla", "2002-01-01");
         } catch (RepoException ignored) {
             System.out.println("srv add error");
+        }catch (ServiceException ignored){
+            System.out.println("srv date val err");
         }
         try {
-            service.addUser("bla", "bla");
+            service.addUser("bla", "bla@bla.com", "bla", "2001-01-01");
             System.out.println("srv add error");
-        } catch (RepoException ignored) {
+        } catch (RepoException | ServiceException ignored) {
 
         }
         try {

@@ -3,9 +3,13 @@ package service;
 import domain.Friendship;
 import domain.User;
 import exceptions.RepoException;
+import exceptions.ServiceException;
 import repo.FriendshipRepo;
 import repo.UserRepo;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class UserService {
@@ -34,8 +38,13 @@ public class UserService {
      * @param password parola utilizatorului
      * @throws RepoException dacă utilizatorul există deja
      */
-    public void addUser(String userName, String password) throws RepoException {
-        repo.addUser(new User(userName, password));
+    public void addUser(String userName, String email, String password, String birthDate) throws RepoException, ServiceException {
+        if(!Validator.dateValidator(birthDate)){
+            throw new ServiceException("formatul de dată este yyyy-MM-dd");
+        }
+        repo.addUser(new User(userName, email, password,
+                LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                        .atStartOfDay()));
     }
 
     /**
