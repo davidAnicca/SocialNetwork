@@ -21,31 +21,33 @@ public class ConsoleUiAdmin {
     /**
      * ciclul principal al consolei
      */
-    public void run(){
+    public void run() {
 
-        while (true){
+        while (true) {
             showMenu();
-            if(!choose())break;
+            if (!choose()) break;
         }
     }
 
     /**
      * citește din consolă un string
+     *
      * @return stringul citit
      */
-    private String readFromConsole(){
+    private String readFromConsole() {
         Scanner in = new Scanner(System.in);
         return in.nextLine();
     }
 
     /**
      * se alege comanda dorita din meniu
+     *
      * @return true dacă se dorește continuarea ciclului de consolă
      */
     private boolean choose() {
         System.out.print(">>");
         String opt = readFromConsole();
-        switch (opt.strip()){
+        switch (opt.strip()) {
             case "":
                 break;
             case "0":
@@ -90,22 +92,23 @@ public class ConsoleUiAdmin {
     /**
      * afișează toate rețelele din aplicație
      */
-    private void showNetworks(){
-        for(Set<User> network : service.getNetworks()){
+    private void showNetworks() {
+        for (Set<User> network : service.getNetworks()) {
             showNetwork(network);
         }
     }
 
     /**
      * pretty print o rețea dată
+     *
      * @param network rețeaua dată
      */
     private static void showNetwork(Set<User> network) {
-        System.out.println("\nrețea:");
-        for(User user: network){
+
+        for (User user : network) {
             System.out.print(user.getUserName() + " - ");
         }
-        System.out.print("|\n\n");
+        System.out.println("|");
     }
 
     /**
@@ -114,19 +117,19 @@ public class ConsoleUiAdmin {
     private void removeFriendshipUi() {
         System.out.print("user1>>");
         String user1 = readFromConsole();
-        if(!Validator.userNameValidator(user1.strip())){
+        if (!Validator.userNameValidator(user1.strip())) {
             System.out.println("numele trebuie sa contina doar litere si cifre");
             return;
         }
         System.out.print("user2>>");
         String user2 = readFromConsole();
-        if(!Validator.userNameValidator(user2.strip())){
+        if (!Validator.userNameValidator(user2.strip())) {
             System.out.println("numele trebuie sa contina doar litere si cifre");
             return;
         }
         try {
             service.removeFriendship(user1, user2);
-        }catch (RepoException e){
+        } catch (RepoException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -138,20 +141,20 @@ public class ConsoleUiAdmin {
         System.out.print("user1>>");
 
         String user1 = readFromConsole();
-        if(!Validator.userNameValidator(user1.strip())){
+        if (!Validator.userNameValidator(user1.strip())) {
             System.out.println("numele trebuie sa contina doar litere si cifre");
             return;
         }
         System.out.print("user2>>");
         String user2 = readFromConsole();
 
-        if(!Validator.userNameValidator(user2.strip())){
+        if (!Validator.userNameValidator(user2.strip())) {
             System.out.println("numele trebuie sa contina doar litere si cifre");
             return;
         }
         try {
             service.addFriendship(user1.strip(), user2.strip());
-        }catch (RepoException e){
+        } catch (RepoException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -160,7 +163,7 @@ public class ConsoleUiAdmin {
      * afișează toate relațiile de prietenie
      */
     private void showFriendshipUi() {
-        for(Friendship friendship:service.getFriendships()){
+        for (Friendship friendship : service.getFriendships()) {
             System.out.println(friendship);
         }
     }
@@ -169,7 +172,7 @@ public class ConsoleUiAdmin {
      * afișează toți utilizatorii din aplicație
      */
     private void showUsersUi() {
-        for (User user: service.getUsers())
+        for (User user : service.getUsers())
             System.out.println(user);
     }
 
@@ -179,13 +182,13 @@ public class ConsoleUiAdmin {
     private void removeUserUi() {
         System.out.print("user name>>");
         String userName = readFromConsole();
-        if(!Validator.userNameValidator(userName.strip())){
+        if (!Validator.userNameValidator(userName.strip())) {
             System.out.println("numele trebuie sa contina doar litere si cifre");
             return;
         }
         try {
             service.removeUser(userName);
-        }catch (RepoException e){
+        } catch (RepoException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -196,7 +199,7 @@ public class ConsoleUiAdmin {
     private void addUserUi() {
         System.out.print("user name>>");
         String userName = readFromConsole();
-        if(!Validator.userNameValidator(userName.strip())){
+        if (!Validator.userNameValidator(userName.strip())) {
             System.out.println("numele trebuie sa contina doar litere si cifre");
             return;
         }
@@ -204,7 +207,7 @@ public class ConsoleUiAdmin {
         String password = readFromConsole();
         System.out.print("email>>");
         String email = readFromConsole();
-        if(!Validator.emailValidator(email)){
+        if (!Validator.emailValidator(email)) {
             System.out.println("email invalid");
             return;
         }
@@ -212,7 +215,7 @@ public class ConsoleUiAdmin {
         String date = readFromConsole();
         try {
             service.addUser(userName.strip(), email.strip(), password.strip(), date.strip());
-        }catch (RepoException | ServiceException e){
+        } catch (RepoException | ServiceException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -221,6 +224,7 @@ public class ConsoleUiAdmin {
      * afișează meniul aplicației
      */
     private void showMenu() {
+        pressEnterToContinue();
         System.out.println("0.Exit");
         System.out.println("1.Adauga utilizator");
         System.out.println("2.Sterge utilizator");
@@ -230,5 +234,16 @@ public class ConsoleUiAdmin {
         System.out.println("6. Sterge prietenie");
         System.out.println("7. Afișează rețele");
         System.out.println("8. Afisează cea mai lungă rețea");
+    }
+
+    private void pressEnterToContinue()
+    {
+        System.out.println("\nApasă enter pentru a continua...");
+        try
+        {
+            System.in.read();
+        }
+        catch(Exception ignored)
+        {}
     }
 }

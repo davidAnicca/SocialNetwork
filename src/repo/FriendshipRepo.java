@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -48,7 +50,10 @@ public class FriendshipRepo {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] split = data.split(",");
-                Friendship newFriendship = new Friendship(split[0], split[1]);
+                Friendship newFriendship = new Friendship(split[0],
+                        split[1],
+                        LocalDate.parse(split[2],
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 friendships.add(newFriendship);
             }
             myReader.close();
@@ -68,6 +73,9 @@ public class FriendshipRepo {
                 myWriter.write(friendship.getUser1()
                         + ","
                         + friendship.getUser2()
+                        + ","
+                        + friendship.getFriendsFrom().format(
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                         + ",\n");
             }
             myWriter.close();

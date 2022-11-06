@@ -1,5 +1,7 @@
 package domain;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Friendship {
@@ -9,9 +11,20 @@ public class Friendship {
     String user1;
     String user2;
 
-    public Friendship(String user1, String user2) {
+    public LocalDate getFriendsFrom() {
+        return friendsFrom;
+    }
+
+    public void setFriendsFrom(LocalDate friendsFrom) {
+        this.friendsFrom = friendsFrom;
+    }
+
+    LocalDate friendsFrom;
+
+    public Friendship(String user1, String user2, LocalDate friendsFrom) {
         this.user1 = user1;
         this.user2 = user2;
+        this.friendsFrom = friendsFrom;
     }
 
     public String getUser1() {
@@ -41,7 +54,11 @@ public class Friendship {
 
     @Override
     public String toString() {
-        return user1 + " este prieten cu " + user2;
+        return user1
+                + " este prieten cu "
+                + user2
+                + " din "
+                + friendsFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     @Override

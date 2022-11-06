@@ -92,7 +92,7 @@ public class UserService {
      */
     public void addFriendship(String user1, String user2) throws RepoException {
         if (areUsers(user1, user2)) {
-            friendshipRepo.addFriendship(new Friendship(user1, user2));
+            friendshipRepo.addFriendship(new Friendship(user1, user2, LocalDate.now()));
         }else throw new RepoException("prietenia se leagă doar între useri valizi");
     }
 
@@ -104,7 +104,7 @@ public class UserService {
      */
     public void removeFriendship(String user1, String user2) throws RepoException {
         if (areUsers(user1, user2)) {
-            friendshipRepo.removeFriendship(new Friendship(user1, user2));
+            friendshipRepo.removeFriendship(new Friendship(user1, user2, LocalDate.now()));
         }
     }
 
