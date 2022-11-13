@@ -4,12 +4,10 @@ import domain.Friendship;
 import domain.User;
 import exceptions.RepoException;
 import exceptions.ServiceException;
-import repo.FriendshipRepo;
-import repo.UserRepo;
+import repo.db.FriendshipRepoDb;
 import repo.db.UserRepoDb;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -18,7 +16,7 @@ public class UserService {
      * service pentru useri și relații de prietenii
      */
     UserRepoDb repo;
-    FriendshipRepo friendshipRepo;
+    FriendshipRepoDb friendshipRepo;
 
     NetworksService networksService;
 
@@ -27,7 +25,7 @@ public class UserService {
      * @param repo repo pentru utilizatori
      * @param friendshipRepo repo pentru relații de prietenie
      */
-    public UserService(UserRepoDb repo, FriendshipRepo friendshipRepo) {
+    public UserService(UserRepoDb repo, FriendshipRepoDb friendshipRepo) {
         this.friendshipRepo = friendshipRepo;
         this.repo = repo;
         networksService = new NetworksService(friendshipRepo, repo);

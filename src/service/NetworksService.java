@@ -2,15 +2,13 @@ package service;
 
 import domain.Friendship;
 import domain.User;
-import exceptions.RepoException;
-import repo.FriendshipRepo;
-import repo.UserRepo;
+import repo.db.FriendshipRepoDb;
 import repo.db.UserRepoDb;
 
 import java.util.*;
 
 public class NetworksService {
-    private FriendshipRepo friendshipRepo;
+    private FriendshipRepoDb friendshipRepo;
     private UserRepoDb repo;
 
     /**
@@ -18,7 +16,7 @@ public class NetworksService {
      * @param friendshipRepo repo pentru prietenii
      * @param repo repo pentru utilizatori
      */
-    public NetworksService(FriendshipRepo friendshipRepo, UserRepoDb repo) {
+    public NetworksService(FriendshipRepoDb friendshipRepo, UserRepoDb repo) {
         this.friendshipRepo = friendshipRepo;
         this.repo = repo;
     }

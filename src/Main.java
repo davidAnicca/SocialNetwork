@@ -1,8 +1,5 @@
-import domain.User;
 import exceptions.RepoException;
-import exceptions.ServiceException;
-import repo.FriendshipRepo;
-import repo.UserRepo;
+import repo.db.FriendshipRepoDb;
 import repo.db.UserRepoDb;
 import service.UserService;
 import userInterface.ConsoleUiAdmin;
@@ -16,7 +13,9 @@ public class Main {
                         new UserRepoDb("jdbc:postgresql://localhost:5432/SocialNetworkDB",
                                 "postgres",
                                 "adenozintrifosfat"),
-                        new FriendshipRepo("friendships.csv")
+                        new FriendshipRepoDb("jdbc:postgresql://localhost:5432/SocialNetworkDB",
+                                "postgres",
+                                "adenozintrifosfat")
                 )
         );
         consoleUiAdmin.run();
