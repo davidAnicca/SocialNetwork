@@ -6,6 +6,7 @@ import exceptions.RepoException;
 import exceptions.ServiceException;
 import repo.FriendshipRepo;
 import repo.UserRepo;
+import repo.db.UserRepoDb;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class UserService {
     /**
      * service pentru useri și relații de prietenii
      */
-    UserRepo repo;
+    UserRepoDb repo;
     FriendshipRepo friendshipRepo;
 
     NetworksService networksService;
@@ -26,7 +27,7 @@ public class UserService {
      * @param repo repo pentru utilizatori
      * @param friendshipRepo repo pentru relații de prietenie
      */
-    public UserService(UserRepo repo, FriendshipRepo friendshipRepo) {
+    public UserService(UserRepoDb repo, FriendshipRepo friendshipRepo) {
         this.friendshipRepo = friendshipRepo;
         this.repo = repo;
         networksService = new NetworksService(friendshipRepo, repo);

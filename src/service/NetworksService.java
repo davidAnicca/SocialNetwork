@@ -5,19 +5,20 @@ import domain.User;
 import exceptions.RepoException;
 import repo.FriendshipRepo;
 import repo.UserRepo;
+import repo.db.UserRepoDb;
 
 import java.util.*;
 
 public class NetworksService {
     private FriendshipRepo friendshipRepo;
-    private UserRepo repo;
+    private UserRepoDb repo;
 
     /**
      * constructor
      * @param friendshipRepo repo pentru prietenii
      * @param repo repo pentru utilizatori
      */
-    public NetworksService(FriendshipRepo friendshipRepo, UserRepo repo) {
+    public NetworksService(FriendshipRepo friendshipRepo, UserRepoDb repo) {
         this.friendshipRepo = friendshipRepo;
         this.repo = repo;
     }
