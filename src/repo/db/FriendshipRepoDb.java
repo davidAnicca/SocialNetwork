@@ -21,7 +21,8 @@ public class FriendshipRepoDb {
 
     /**
      * constructor
-     * @param url conectare la bd
+     *
+     * @param url      conectare la bd
      * @param userName user name pt baza de dat
      * @param password parola pt baza de date
      */
@@ -31,6 +32,7 @@ public class FriendshipRepoDb {
         this.password = password;
         loadData();
     }
+    //#todo piano man harmonica
 
     /**
      * preia datele din baza de date
@@ -55,6 +57,7 @@ public class FriendshipRepoDb {
 
     /**
      * obține mulțimea tuturor relațiilor de prietenie
+     *
      * @return o mulțime care conține toate relațiile de prietenie din aplicație
      */
     public Set<Friendship> getFriendships() {
@@ -62,15 +65,19 @@ public class FriendshipRepoDb {
     }
 
 
-
-
     /**
      * adaugă o relație de prietenie
+     *
      * @param friendship relația de prietenie care trebuie adăugată
      * @throws RepoException dacă relația există deja
      */
     public void addFriendship(Friendship friendship) throws RepoException {
-        if(!friendships.add(friendship)){
+        for(Friendship friendship1: friendships){
+            if(friendship1.equals(friendship)) {
+                throw new RepoException("prietenia există deja");
+            }
+        }
+        if (!friendships.add(friendship)) {
             throw new RepoException("prietenia exista deja");
         }
         saveFriendship(friendship);
@@ -94,24 +101,38 @@ public class FriendshipRepoDb {
 
     /**
      * șterge o relație de prietenie
+     *
      * @param friendship relația care ar trebui ștearsă
      * @throws RepoException dacă relația nu există
      */
-    public void removeFriendship(Friendship friendship) throws RepoException{
-        if(!friendships.remove(friendship)){
-            throw new RepoException("prietenia nu există");
+    public void removeFriendship(Friendship friendship) throws RepoException {
+        for(Friendship friendship1 : friendships) {
+            if (friendship1.equals(friendship)) {
+                friendships.remove(friendship);
+                removeFriendshipFromDb(friendship);
+                return;
+            }
         }
-        removeFriendshipFromDb(friendship);
+        throw new RepoException("prietenia nu există");
     }
 
     private void removeFriendshipFromDb(Friendship friendship) {
         String sql = "delete from friendships where user1=? and user2=?";
-
+        String sql2 = "delete from friendships where user1=? and user2=?";
         try (Connection connection = DriverManager.getConnection(url, userName, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setString(1, friendship.getUser1());
             ps.setString(2, friendship.getUser2());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try (Connection connection = DriverManager.getConnection(url, userName, password);
+             PreparedStatement ps = connection.prepareStatement(sql2)) {
+
+            ps.setString(2, friendship.getUser1());
+            ps.setString(1, friendship.getUser2());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

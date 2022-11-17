@@ -1,3 +1,4 @@
+import domain.Friendship;
 import exceptions.RepoException;
 import repo.db.FriendshipRepoDb;
 import repo.db.UserRepoDb;
