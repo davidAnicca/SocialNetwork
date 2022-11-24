@@ -32,7 +32,7 @@ public class FriendshipRepoDb {
         this.password = password;
         loadData();
     }
-    //#todo piano man harmonica
+
 
     /**
      * preia datele din baza de date
@@ -124,6 +124,7 @@ public class FriendshipRepoDb {
 
             ps.setString(1, friendship.getUser1());
             ps.setString(2, friendship.getUser2());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
