@@ -1,6 +1,7 @@
 package domain;
 
-import java.sql.Date;
+import utils.Strings;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -73,7 +74,7 @@ public class Friendship {
                 + " este prieten cu "
                 + user2
                 + " din "
-                + friendsFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                + friendsFrom.format(DateTimeFormatter.ofPattern(Strings.dateFormat))
                 + " || status: "
                 + status.toString();
     }
