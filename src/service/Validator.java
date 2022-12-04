@@ -1,5 +1,7 @@
 package service;
 
+import utils.Strings;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +27,7 @@ public class Validator {
             return false;
         try {
             LocalDate dateTime = LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    DateTimeFormatter.ofPattern(Strings.dateFormat));
             if (dateTime.isAfter(LocalDate.now().plusDays(1)))
                 return false;
             return true;
