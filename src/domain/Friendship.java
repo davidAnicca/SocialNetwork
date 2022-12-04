@@ -21,11 +21,25 @@ public class Friendship {
     }
 
     LocalDate friendsFrom;
+    FriendshipStatus status;
 
     public Friendship(String user1, String user2, LocalDate friendsFrom) {
         this.user1 = user1;
         this.user2 = user2;
         this.friendsFrom = friendsFrom;
+        this.status = FriendshipStatus.PENDING;
+    }
+
+    public FriendshipStatus getStatus() {
+        return status;
+    }
+
+    public void acceptFriendship() {
+        this.status = FriendshipStatus.ACCEPTED;
+    }
+
+    public void deleteFriendship() {
+        this.status = FriendshipStatus.DELETED;
     }
 
     public String getUser1() {
@@ -59,7 +73,22 @@ public class Friendship {
                 + " este prieten cu "
                 + user2
                 + " din "
-                + friendsFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                + friendsFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                + " || status: "
+                + status.toString();
+    }
+
+    public int statusToInt() {
+        if (status == FriendshipStatus.PENDING) return 0;
+        if (status == FriendshipStatus.ACCEPTED) return 1;
+        return 2;
+    }
+
+    public void setStatusFromInt(int status) {
+        if (status == 0) this.status = FriendshipStatus.PENDING;
+        if (status == 1) this.status = FriendshipStatus.ACCEPTED;
+        if (status == 2) this.status = FriendshipStatus.DELETED;
+
     }
 
     @Override

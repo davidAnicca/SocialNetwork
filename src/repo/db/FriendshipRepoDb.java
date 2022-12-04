@@ -1,6 +1,7 @@
 package repo.db;
 
 import domain.Friendship;
+import domain.FriendshipStatus;
 import domain.User;
 import exceptions.RepoException;
 
@@ -33,7 +34,6 @@ public class FriendshipRepoDb {
         loadData();
     }
 
-
     /**
      * preia datele din baza de date
      */
@@ -47,7 +47,9 @@ public class FriendshipRepoDb {
                 String user1 = resultSet.getString("user1");
                 String user2 = resultSet.getString("user2");
                 LocalDate from = resultSet.getDate("ffrom").toLocalDate();
+                int statusInt = resultSet.getInt("status");
                 Friendship friendship = new Friendship(user1, user2, from);
+                friendship.setStatusFromInt(statusInt);
                 friendships.add(friendship);
             }
         } catch (SQLException e) {
@@ -72,8 +74,8 @@ public class FriendshipRepoDb {
      * @throws RepoException dacă relația există deja
      */
     public void addFriendship(Friendship friendship) throws RepoException {
-        for(Friendship friendship1: friendships){
-            if(friendship1.equals(friendship)) {
+        for (Friendship friendship1 : friendships) {
+            if (friendship1.equals(friendship)) {
                 throw new RepoException("prietenia există deja");
             }
         }
@@ -84,7 +86,7 @@ public class FriendshipRepoDb {
     }
 
     private void saveFriendship(Friendship friendship) {
-        String sql = "insert into friendships (user1, user2, ffrom) values (?, ?, ?)";
+        String sql = "insert into friendships (user1, user2, ffrom, status) values (?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(url, userName, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -92,7 +94,7 @@ public class FriendshipRepoDb {
             ps.setString(1, friendship.getUser1());
             ps.setString(2, friendship.getUser2());
             ps.setDate(3, Date.valueOf(friendship.getFriendsFrom()));
-
+            ps.setInt(4, friendship.statusToInt());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,10 +108,21 @@ public class FriendshipRepoDb {
      * @throws RepoException dacă relația nu există
      */
     public void removeFriendship(Friendship friendship) throws RepoException {
-        for(Friendship friendship1 : friendships) {
+        for (Friendship friendship1 : friendships) {
             if (friendship1.equals(friendship)) {
-                friendships.remove(friendship);
+                friendship1.deleteFriendship();
                 removeFriendshipFromDb(friendship);
+                saveFriendship(friendship);
+                return;
+            }
+        }
+        throw new RepoException("prietenia nu există");
+    }
+
+    public void acceptFriendship(Friendship friendship) throws RepoException {
+        for (Friendship friendship1 : friendships) {
+            if (friendship.equals(friendship1)) {
+                friendship1.acceptFriendship();
                 return;
             }
         }

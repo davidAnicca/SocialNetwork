@@ -6,6 +6,7 @@ import exceptions.RepoException;
 import exceptions.ServiceException;
 import repo.db.FriendshipRepoDb;
 import repo.db.UserRepoDb;
+import utils.Strings;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +23,8 @@ public class UserService {
 
     /**
      * constructor
-     * @param repo repo pentru utilizatori
+     *
+     * @param repo           repo pentru utilizatori
      * @param friendshipRepo repo pentru relații de prietenie
      */
     public UserService(UserRepoDb repo, FriendshipRepoDb friendshipRepo) {
@@ -33,21 +35,23 @@ public class UserService {
 
     /**
      * adaugare un utilizator nou
+     *
      * @param userName numele utilizatorului
      * @param password parola utilizatorului
      * @throws RepoException dacă utilizatorul există deja
      */
     public void addUser(String userName, String email, String password, String birthDate) throws RepoException, ServiceException {
-        if(!Validator.dateValidator(birthDate)){
+        if (!Validator.dateValidator(birthDate)) {
             throw new ServiceException("formatul de dată este yyyy-MM-dd");
         }
         repo.addUser(new User(userName, email, password,
-                LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                LocalDate.parse(birthDate, DateTimeFormatter.ofPattern(Strings.dateFormat))
                         .atStartOfDay()));
     }
 
     /**
      * șterge un utilizator
+     *
      * @param userName numele utilizatorului care trebuie șters
      * @throws RepoException dacă utilizatorul nu există
      */
@@ -58,6 +62,7 @@ public class UserService {
 
     /**
      * toți utilizatorii
+     *
      * @return o mulțime cu toți utilizatorii din aplicație
      */
     public Set<User> getUsers() {
@@ -66,6 +71,7 @@ public class UserService {
 
     /**
      * verifică dacă un nume de utilizator corespunde unui user
+     *
      * @param userName numele de utilizator de verificat
      * @return true dacă există un user cu numele userName
      */
@@ -75,6 +81,7 @@ public class UserService {
 
     /**
      * verifică dacă două nume de utilizatori corespund unor utilizatori valizi
+     *
      * @param user1 nume de utilizator de verificat
      * @param user2 nume de utilizator de verificat
      * @return dacă user1 și user2 corespund unor utilozatori valizi
@@ -85,6 +92,7 @@ public class UserService {
 
     /**
      * adaugă o relație nouă de prietenie între user1 și user2
+     *
      * @param user1 numele primului user
      * @param user2 numele celuilalt user
      * @throws RepoException dacă relația de prietenie există deja
@@ -92,11 +100,18 @@ public class UserService {
     public void addFriendship(String user1, String user2) throws RepoException {
         if (areUsers(user1, user2)) {
             friendshipRepo.addFriendship(new Friendship(user1, user2, LocalDate.now()));
-        }else throw new RepoException("prietenia se leagă doar între useri valizi");
+        } else throw new RepoException("prietenia se leagă doar între useri valizi");
+    }
+
+    public void acceptFriendship(String user1, String user2) throws RepoException {
+        if (areUsers(user1, user2)) {
+            friendshipRepo.acceptFriendship(new Friendship(user1, user2, null));
+        }
     }
 
     /**
      * șterge relația de prietenie dintre user1 și user2
+     *
      * @param user1 primul utilizator
      * @param user2 celalalt utilizator
      * @throws RepoException dacă relatia de prietenie nu există
@@ -109,6 +124,7 @@ public class UserService {
 
     /**
      * șterge toate relațiile de prietenie ale lui user
+     *
      * @param user numele de utilizator ale cărui relații trebuie șterse (nu referă neapărat un user valid)
      */
     public void removeFriendships(String user) {
@@ -121,7 +137,7 @@ public class UserService {
         for (Friendship friendship : friendshipsToBeDeleted) {
             try {
                 friendshipRepo.removeFriendship(friendship);
-            }catch (RepoException ignored){
+            } catch (RepoException ignored) {
                 ///
             }
         }
@@ -129,6 +145,7 @@ public class UserService {
 
     /**
      * toate relațiile de prietenie
+     *
      * @return o mulțime cu relații de prietenie
      */
     public Set<Friendship> getFriendships() {
@@ -137,12 +154,13 @@ public class UserService {
 
     /**
      * lista de prieteni a unui utilizator
+     *
      * @param user numele utilizatorului
      * @return lista cu prietenii utilizatorului user
      * @throws RepoException daca user nu referă către un utilizator valid
      */
     public Set<String> getFriends(String user) throws RepoException {
-        if(!isUser(user)){
+        if (!isUser(user)) {
             throw new RepoException(user + " nu este utilizator");
         }
         return networksService.getFriends(user);
@@ -150,17 +168,19 @@ public class UserService {
 
     /**
      * Lista tuturor rețelelor din aplicație
+     *
      * @return o listă de rețele; o rețea este o mulțime de utilizatori
      */
-    public List<Set<User>> getNetworks(){
+    public List<Set<User>> getNetworks() {
         return networksService.networks();
     }
 
     /**
      * obține cea mai lungă comunitate
+     *
      * @return o mulțime de useri (un network)
      */
-    public Set<User> getLongestNetwork(){
+    public Set<User> getLongestNetwork() {
         return networksService.longestNetwork();
     }
 }
